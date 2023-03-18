@@ -1,0 +1,18 @@
+-- Summary table for Canadian data
+
+CREATE TABLE covid_dataset.summary_table_canada AS (
+  SELECT
+    date,
+    FORMAT_DATETIME("%B", DATETIME(date)) AS month_name,
+    EXTRACT(year FROM date) AS year,
+    new_cases,
+    SUM(new_cases) OVER(ORDER BY date) AS running_totals
+  FROM
+    `portfolio-projects-380014.covid_dataset.covid_data`
+  WHERE
+     location = 'Canada'
+  ORDER BY
+     date,
+     year,
+     month_name
+  );
